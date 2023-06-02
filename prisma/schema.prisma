@@ -1,0 +1,33 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model MapMarker {
+  id                 Int             @id @default(autoincrement())
+  lat                Float
+  lng                Float
+  name               String
+  description        String?
+  isAlumni           Boolean
+  attachedToResponse SurveyResponse? @relation(fields: [surveyResponseId], references: [id])
+  surveyResponseId   Int?
+}
+
+model SurveyResponse {
+  id                         Int         @id @default(autoincrement())
+  name                       String
+  email                      String
+  isAlumni                   Boolean
+  homeLocations              String
+  travelLocationsWithMvnu    String
+  travelLocationsWithoutMvnu String
+  MapMarker                  MapMarker[]
+}
